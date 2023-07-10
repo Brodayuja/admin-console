@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -62,6 +62,7 @@ const Contacts = () => {
   ];
 
   const [books, setBooks] = useState([]);
+  const [selectedBooks, setSelectedBooks] = useState();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -77,6 +78,26 @@ const Contacts = () => {
 
     fetchBooks();
   }, []);
+
+  async function handleDelete() {
+    // You can access the selected user IDs from the `selectedUsers` state
+    console.log(
+      "Selected Book ISBN's:",
+      selectedBooks.map((book) => book.isbn)
+    );
+    try {
+      for (const book of selectedBooks) {
+        const response = await fetch(
+          `http://localhost:3000/api/allbooks/${book.isbn}`,
+          {
+            method: "DELETE",
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Box m="20px">
@@ -118,7 +139,18 @@ const Contacts = () => {
           rows={books}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          onSelectionModelChange={(newSelection) => {
+            const selectedBooks = newSelection.map((id) =>
+              books.find((book) => book.id === id)
+            );
+            console.log(books);
+            setSelectedBooks(selectedBooks);
+            console.log(selectedBooks);
+          }}
         />
+        <Button onClick={handleDelete} color="secondary" variant="contained">
+          Delete Selected
+        </Button>
       </Box>
     </Box>
   );

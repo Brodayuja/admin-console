@@ -1,7 +1,6 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Button, Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useState, useEffect } from "react";
 
@@ -59,6 +58,7 @@ const Invoices = () => {
   ];
 
   const [reviews, setReviews] = useState([]);
+  const [selectedReviews, setSelectedReviews] = useState();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -74,6 +74,26 @@ const Invoices = () => {
 
     fetchBooks();
   }, []);
+
+  async function handleDelete() {
+    // You can access the selected user IDs from the `selectedUsers` state
+    console.log(
+      "Selected Review IDs:",
+      selectedReviews.map((review) => review.id)
+    );
+    try {
+      for (const review of selectedReviews) {
+        const response = await fetch(
+          `http://localhost:3000/api/reviews/${review.id}`,
+          {
+            method: "DELETE",
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Box m="20px">
@@ -115,7 +135,16 @@ const Invoices = () => {
           rows={reviews}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          onSelectionModelChange={(newSelection) => {
+            const selectedReviews = newSelection.map((id) =>
+              reviews.find((review) => review.id === id)
+            );
+            setSelectedReviews(selectedReviews);
+          }}
         />
+        <Button onClick={handleDelete} color="secondary" variant="contained">
+          Delete Selected
+        </Button>
       </Box>
     </Box>
   );
