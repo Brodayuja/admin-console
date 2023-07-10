@@ -145,6 +145,7 @@ const Team = () => {
               users.find((user) => user.id === id)
             );
             setSelectedUsers(selectedUsers);
+            console.log(selectedUsers);
           }}
         />
         <Button onClick={handleDelete} color="secondary" variant="contained">
