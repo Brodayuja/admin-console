@@ -6,10 +6,13 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
 import { useState, useEffect } from "react";
+import UserDetails from "../UserDetails/UserDetails";
+import { useNavigate } from "react-router-dom";
 
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -65,6 +68,7 @@ const Team = () => {
 
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -79,6 +83,11 @@ const Team = () => {
 
     fetchUsers();
   }, []);
+
+  async function handleUserClick(user) {
+    // Navigate to the UserDetails page with the selected user's ID
+    navigate(`/team/user/${user.id}`);
+  }
 
   async function handleDelete() {
     // You can access the selected user IDs from the `selectedUsers` state
@@ -145,13 +154,16 @@ const Team = () => {
               users.find((user) => user.id === id)
             );
             setSelectedUsers(selectedUsers);
-            console.log(selectedUsers);
+
+            setSelectedUsers(selectedUsers);
           }}
+          onRowClick={(params) => handleUserClick(params.row)}
         />
         <Button onClick={handleDelete} color="secondary" variant="contained">
           Delete Selected
         </Button>
       </Box>
+      {selectedUser && <UserDetails record={selectedUser} />}
     </Box>
   );
 };
