@@ -200,3 +200,38 @@ export const fetchAllUserData = async () => {
     console.log(error);
   }
 };
+
+//add to allBooksTable
+
+export const postToAllBooks = async () => {
+  try {
+    const settings = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        book: {
+          isbn: isbn,
+          title: title,
+          author: author,
+          artist: artist,
+          illustrator: illustrator,
+          genre: genre,
+          summary: summary,
+          publisher: publisher,
+          yearPublished: yearPublished,
+          bookCover: bookCover,
+          audience: audience,
+          physicalDescription: physicalDescription,
+          bookType: bookType,
+        },
+      }),
+    };
+    const response = await fetch(`${BASE_URL}/api/allbooks}`, settings);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
