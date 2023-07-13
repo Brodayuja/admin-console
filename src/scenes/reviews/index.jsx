@@ -4,7 +4,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useState, useEffect } from "react";
 
-const Invoices = () => {
+const Reviews = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -150,4 +150,4 @@ const Invoices = () => {
   );
 };
 
-export default Invoices;
+export default Reviews;

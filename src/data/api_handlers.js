@@ -162,11 +162,28 @@ export const fetchUserById = async (userId) => {
     console.log(error);
   }
 };
-// User Update
+// User Update (PUT)
 export const updateUser = async (userId, updatedData) => {
   try {
     const response = await fetch(`${BASE_URL}/users/${userId}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// User Update (Patch)
+export const updateUserPatch = async (userId, updatedData) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
