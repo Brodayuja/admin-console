@@ -245,10 +245,36 @@ export const postToAllBooks = async () => {
         },
       }),
     };
-    const response = await fetch(`${BASE_URL}/api/allbooks}`, settings);
+    const response = await fetch(`${BASE_URL}/allbooks}`, settings);
     const result = await response.json();
     return result;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const fetchFromAllBooksByIsbn = async (isbn) => {
+  try {
+    const response = await fetch(`${BASE_URL}/allbooks/${isbn}`);
+    const result = response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateAllBooks = async (isbn, updatedData) => {
+  try {
+    const response = await fetch(`${BASE_URL}/allbooks/${isbn}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
   }
 };
