@@ -78,7 +78,7 @@ const EditUser = (props) => {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
+      <Button onClick={handleOpen} color="secondary" variant="contained">
         <Typography color={colors.grey[100]}>Edit User</Typography>
       </Button>
       <Backdrop

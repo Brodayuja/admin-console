@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { postToAllBooks } from "../../data/api_handlers";
 
 const initialValues = {
-  isbn: null,
+  isbn: "",
   title: "",
   author: "",
   artist: "",
@@ -23,7 +23,7 @@ const initialValues = {
   genre: "",
   summary: "",
   publisher: "",
-  yearPublished: null,
+  yearPublished: "",
   bookCover: "",
   audience: "",
   physicalDescription: "",

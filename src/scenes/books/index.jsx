@@ -4,10 +4,12 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Books = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -79,8 +81,13 @@ const Books = () => {
     fetchBooks();
   }, []);
 
+  async function handleBookClick(book) {
+    // Navigate to the UserDetails page with the selected user's ID
+    navigate(`/books/bookdetails/${book.isbn}`);
+  }
+
   async function handleDelete() {
-    // You can access the selected user IDs from the `selectedUsers` state
+    // You can access the selected book ISBNs from the `selectedBooks` state
     console.log(
       "Selected Book ISBN's:",
       selectedBooks.map((book) => book.isbn)
@@ -147,6 +154,7 @@ const Books = () => {
             setSelectedBooks(selectedBooks);
             console.log(selectedBooks);
           }}
+          onRowClick={(params) => handleBookClick(params.row)}
         />
         <Button onClick={handleDelete} color="secondary" variant="contained">
           Delete Selected
