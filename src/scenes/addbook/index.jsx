@@ -30,7 +30,7 @@ const initialValues = {
   booktype: "",
 };
 
-const Form = () => {
+const AddBookForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
 
@@ -270,10 +270,6 @@ const Form = () => {
   );
 };
 
-const getCharacterValidationError = (str) => {
-  return `Your password must have at least 1 ${str} character`;
-};
-
 const checkoutSchema = yup.object().shape({
   isbn: yup.string().required("required"),
   title: yup.string().required("required"),
@@ -285,4 +281,4 @@ const checkoutSchema = yup.object().shape({
   bookType: yup.string().required("required"),
 });
 
-export default Form;
+export default AddBookForm;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Typography,
@@ -8,12 +8,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { tokens } from "../../theme";
+import EditUser from "./EditUser/EditUser";
 
 const UserDetails = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [newUserData, setNewUserData] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,7 +32,7 @@ const UserDetails = () => {
     };
 
     fetchUser();
-  }, [userId]);
+  }, [userId, newUserData]);
 
   if (!user) {
     return (
@@ -95,6 +97,7 @@ const UserDetails = () => {
         <Typography color={colors.grey[100]}>
           <strong>Access Level:</strong> {user.is_admin ? "Admin" : "User"}
         </Typography>
+        <EditUser user={user} setNewUserData={setNewUserData} />
       </Box>
     </Box>
   );
