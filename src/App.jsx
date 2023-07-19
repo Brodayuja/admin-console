@@ -17,6 +17,7 @@ import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import UserDetails from "./scenes/UserDetails/UserDetails";
 import BookDetails from "./BookDetails";
+import ReviewDetails from "../src/scenes/ReviewDetails/ReviewDetails";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -36,6 +37,10 @@ function App() {
               <Route path="/team/user/:userId" element={<UserDetails />} />
               <Route path="/books" element={<Books />} />
               <Route path="/reviews" element={<Reviews />} />
+              <Route
+                path="/reviews/review/:reviewId"
+                element={<ReviewDetails />}
+              />
               <Route path="/userform" element={<Form />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />

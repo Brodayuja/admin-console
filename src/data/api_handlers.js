@@ -162,6 +162,19 @@ export const fetchUserById = async (userId) => {
     console.log(error);
   }
 };
+
+// Get Review by Id
+export const fetchReviewById = async (reviewId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/reviews/${reviewId}`);
+    const translatedData = await response.json();
+
+    return translatedData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // User Update (PUT)
 export const updateUser = async (userId, updatedData) => {
   try {
@@ -212,6 +225,7 @@ export const fetchAllUserData = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users`);
     const translatedData = await response.json();
+
     return translatedData;
   } catch (error) {
     console.log(error);

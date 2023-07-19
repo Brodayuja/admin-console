@@ -18,6 +18,7 @@ import {
   fetchReviews,
 } from "../../data/api_handlers";
 import { useState, useEffect } from "react";
+import Cookies from "js-cookies";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -25,6 +26,22 @@ const Dashboard = () => {
   const [userAmount, setUserAmount] = useState();
   const [bookCount, setBookCount] = useState();
   const [reviewCount, setReviewCount] = useState();
+  const [userData, setUserData] = useState([]);
+  const [books, setBooks] = useState([]);
+
+  // const myToken = localStorage.getItem("token");
+
+  useEffect(() => {
+    const handleEntrance = () => {
+      // Get the URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Get the value of the 'userId' parameter
+      const userId = urlParams.get("userId");
+      localStorage.setItem("userId", userId);
+    };
+    handleEntrance();
+  }, []);
 
   useEffect(() => {
     const fetchReviewsData = async () => {
@@ -40,6 +57,8 @@ const Dashboard = () => {
       try {
         const response = await fetchAllBooks();
         const data = response.length;
+
+        setBooks(response);
         setBookCount(data);
       } catch (error) {
         console.log(error);
@@ -49,7 +68,10 @@ const Dashboard = () => {
       try {
         const response = await fetchAllUserData();
         const data = response.users.length;
+        const recentUserData = response.users;
+
         setUserAmount(data);
+        setUserData(recentUserData);
       } catch (error) {
         console.log(error);
       }
@@ -59,27 +81,11 @@ const Dashboard = () => {
     fetchBooks();
     fetchReviewsData();
   }, []);
-
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        {/* <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}
@@ -161,44 +167,52 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          overflow="auto"
         >
           <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
           >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Recent Books
+            </Typography>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box>
+          {books.map((book, i) => (
+            <Box
+              key={`${book.id}-${i}`}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+            >
+              <Box>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {book.isbn}
+                </Typography>
+                <Typography color={colors.grey[100]}>{book.title}</Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{book.author}</Box>
+              <Box
+                backgroundColor={colors.greenAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
+              >
+                {book.genre}
+              </Box>
+            </Box>
+          ))}
         </Box>
         <Box
           gridColumn="span 4"
@@ -215,12 +229,12 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              Recent Accounts
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {userData.map((user, i) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={`${user.id}-${i}`}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -233,19 +247,19 @@ const Dashboard = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {user.id}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {user.username}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box color={colors.grey[100]}>{user.name}</Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                {user.created_at}
               </Box>
             </Box>
           ))}
