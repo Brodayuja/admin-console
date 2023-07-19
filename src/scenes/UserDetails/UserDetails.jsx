@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../theme";
 import EditUser from "./EditUser/EditUser";
+import { BASE_URL } from "../../data/api_handlers";
 
 const UserDetails = () => {
   const { userId } = useParams();
@@ -20,9 +21,7 @@ const UserDetails = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/users/${userId}`
-        );
+        const response = await fetch(`${BASE_URL}/users/${userId}`);
         const data = await response.json();
 
         setUser(data);

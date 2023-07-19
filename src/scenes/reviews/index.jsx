@@ -4,6 +4,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../data/api_handlers";
 
 const Reviews = () => {
   const theme = useTheme();
@@ -70,7 +71,7 @@ const Reviews = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/reviews");
+        const response = await fetch(`${BASE_URL}/reviews`);
 
         const data = await response.json();
         setReviews(data);
@@ -95,12 +96,9 @@ const Reviews = () => {
     );
     try {
       for (const review of selectedReviews) {
-        const response = await fetch(
-          `http://localhost:3000/api/reviews/${review.id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`${BASE_URL}/reviews/${review.id}`, {
+          method: "DELETE",
+        });
       }
     } catch (error) {
       console.log(error);

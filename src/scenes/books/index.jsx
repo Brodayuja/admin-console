@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../data/api_handlers";
 
 const Books = () => {
   const theme = useTheme();
@@ -69,7 +70,7 @@ const Books = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/allbooks");
+        const response = await fetch(`${BASE_URL}/allbooks`);
 
         const data = await response.json();
         setBooks(data);
@@ -94,12 +95,9 @@ const Books = () => {
     );
     try {
       for (const book of selectedBooks) {
-        const response = await fetch(
-          `http://localhost:3000/api/allbooks/${book.isbn}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`${BASE_URL}/allbooks/${book.isbn}`, {
+          method: "DELETE",
+        });
       }
     } catch (error) {
       console.log(error);
