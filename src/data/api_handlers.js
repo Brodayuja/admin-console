@@ -260,7 +260,7 @@ export const postToAllBooks = async () => {
         },
       }),
     };
-    const response = await fetch(`${BASE_URL}/allbooks}`, settings);
+    const response = await fetch(`${BASE_URL}/allbooks`, settings);
     const result = await response.json();
     return result;
   } catch (error) {
