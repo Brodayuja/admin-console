@@ -3,10 +3,12 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Reviews = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -55,10 +57,15 @@ const Reviews = () => {
       headerName: "Reported Not Accurate",
       flex: 1,
     },
+    {
+      field: "created_at",
+      headerName: "Created",
+      flex: 1,
+    },
   ];
 
   const [reviews, setReviews] = useState([]);
-  const [selectedReviews, setSelectedReviews] = useState();
+  const [selectedReviews, setSelectedReviews] = useState([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -74,6 +81,11 @@ const Reviews = () => {
 
     fetchBooks();
   }, []);
+
+  async function handleUserClick(review) {
+    // Navigate to the UserDetails page with the selected user's ID
+    navigate(`/reviews/review/${review.id}`);
+  }
 
   async function handleDelete() {
     // You can access the selected user IDs from the `selectedUsers` state
@@ -141,7 +153,9 @@ const Reviews = () => {
             );
             setSelectedReviews(selectedReviews);
           }}
+          onRowClick={(params) => handleUserClick(params.row)}
         />
+
         <Button onClick={handleDelete} color="secondary" variant="contained">
           Delete Selected
         </Button>

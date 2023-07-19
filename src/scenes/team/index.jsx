@@ -57,12 +57,19 @@ const Team = () => {
             {is_admin
               ? <AdminPanelSettingsOutlinedIcon /> && "Admin"
               : <LockOpenOutlinedIcon /> && "User"}
-            {/* <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {is_admin}
-            </Typography> */}
           </Box>
         );
       },
+    },
+    {
+      field: "created_at",
+      headerName: "Created",
+      flex: 1,
+    },
+    {
+      field: "updated_at",
+      headerName: "Updated",
+      flex: 1,
     },
   ];
 
