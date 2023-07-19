@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import { useState, useEffect } from "react";
 import UserDetails from "../UserDetails/UserDetails";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../data/api_handlers";
 
 const Team = () => {
   const theme = useTheme();
@@ -80,7 +81,7 @@ const Team = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/users");
+        const response = await fetch(`${BASE_URL}/users`);
         const data = await response.json();
         setUsers(data.users);
       } catch (error) {
@@ -104,12 +105,9 @@ const Team = () => {
     );
     try {
       for (const user of selectedUsers) {
-        const response = await fetch(
-          `http://localhost:3000/api/users/${user.id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`${BASE_URL}/api/users/${user.id}`, {
+          method: "DELETE",
+        });
       }
     } catch (error) {
       console.log(error);
