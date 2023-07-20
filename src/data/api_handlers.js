@@ -235,7 +235,21 @@ export const fetchAllUserData = async () => {
 
 //add to allBooksTable
 
-export const postToAllBooks = async () => {
+export const postToAllBooks = async (
+  isbn,
+  title,
+  author,
+  artist,
+  illustrator,
+  genre,
+  summary,
+  publisher,
+  yearPublished,
+  bookCover,
+  audience,
+  physicalDescription,
+  bookType
+) => {
   try {
     const settings = {
       method: "POST",
